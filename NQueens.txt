@@ -1,0 +1,78 @@
+public class EightQueens {
+    static final int N = 8; // Chessboard size (8x8)
+
+    // Function to print the board
+    static void printBoard(int board[][]) {
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++)
+                System.out.print(board[i][j] + " ");
+            System.out.println();
+        }
+    }
+
+    // Check if a queen can be placed at board[row][col]
+    static boolean isSafe(int board[][], int row, int col) {
+        int i, j;
+
+        // Check left side of current row
+        for (i = 0; i < col; i++)
+            if (board[row][i] == 1)
+                return false;
+
+        // Check upper diagonal on left side
+        for (i = row, j = col; i >= 0 && j >= 0; i--, j--)
+            if (board[i][j] == 1)
+                return false;
+
+        // Check lower diagonal on left side
+        for (i = row, j = col; j >= 0 && i < N; i++, j--)
+            if (board[i][j] == 1)
+                return false;
+
+        return true;
+    }
+
+    // Backtracking function to solve the 8 Queens problem
+    static boolean solveQueens(int board[][], int col) {
+        // Base case: If all queens are placed
+        if (col >= N)
+            return true;
+
+        for (int i = 0; i < N; i++) {
+            if (isSafe(board, i, col)) {
+                board[i][col] = 1; // Place queen
+
+                if (solveQueens(board, col + 1)) // Recursive call for next column
+                    return true;
+
+                board[i][col] = 0; // Backtrack
+            }
+        }
+        return false;
+    }
+
+    public static void main(String args[]) {
+        int board[][] = new int[N][N];
+
+        // ✅ Place first queen manually
+        board[0][0] = 1; // First queen placed at (0,0)
+
+        // Start solving from column 1 (since first queen is already placed)
+        if (!solveQueens(board, 1)) {
+            System.out.println("Solution does not exist");
+        } else {
+            System.out.println("Final 8-Queens matrix:\n");
+            printBoard(board);
+
+            // 🧩 Print queen positions
+            System.out.println("\nQueen Positions:");
+            for (int i = 0; i < N; i++) {
+                for (int j = 0; j < N; j++) {
+                    if (board[i][j] == 1) {
+                        System.out.println("(" + i + ", " + j + ")");
+                    }
+                }
+            }
+        }
+    }
+}

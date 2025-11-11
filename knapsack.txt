@@ -1,0 +1,58 @@
+import java.util.*;
+
+class Items{
+	double val;
+	double weight;
+	double ratio;
+
+	Items(double val, double weight){
+		this.val=val;
+		this.weight=weight;
+		this.ratio=val/weight;
+	}
+}
+
+class Knapsack{
+	static double getMax(Items []item, double capacity){
+		Arrays.sort(item,(a,b)->Double.compare(b.ratio,a.ratio));
+		double totval=0;
+			
+
+		for(Items i:item){
+			if(capacity>=i.weight){
+				capacity-=i.weight;
+				totval+=i.val;
+		}
+			else{
+			totval+=i.ratio*capacity;
+			break;
+			}
+		}
+		return totval;
+	}
+
+
+	public static void main(String [] args){
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Enter no. of terms : ");
+		int n=sc.nextInt();
+
+		Items item[]=new Items[n];
+		for(int i=0; i<n; i++){
+			System.out.println("Enter the val : ");
+			int val=sc.nextInt();
+			System.out.println("Enter the weight : ");
+			int weight=sc.nextInt();
+			item[i]=new Items(val,weight);
+			}
+
+
+		System.out.println("Enter knapsack capacity : ");
+		double capacity=sc.nextDouble();
+
+		double getMax=getMax(item,capacity);
+		System.out.println("Maximum value in knapsack : "+getMax);
+
+	}
+}
+			
